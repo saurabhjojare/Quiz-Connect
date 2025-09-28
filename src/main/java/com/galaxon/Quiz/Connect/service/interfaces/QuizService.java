@@ -20,4 +20,6 @@ public interface QuizService {
     QuizTakeResponse takeQuiz(Long quizId);
 
     SubmitQuizResponse submitQuiz(Long quizId, SubmitQuizRequest request);
+
+    boolean deleteQuizById(Long quizId);
 }

@@ -17,7 +17,6 @@ public class QuestionRequest {
     @Size(max = 300, message = "Question text cannot exceed 300 characters")
     private String text;
 
-    @NotEmpty(message = "A question must have at least one option")
     private List<OptionRequest> options;
 
     @NotNull(message = "Question type is required")

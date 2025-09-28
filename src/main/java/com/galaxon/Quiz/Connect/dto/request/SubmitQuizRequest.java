@@ -9,11 +9,11 @@ import java.util.List;
 @Data
 public class SubmitQuizRequest {
 
-    @NotNull(message = "Quiz ID is required")
-    private Long quizId;
-
     @NotEmpty(message = "At least one answer must be provided")
     private List<AnswerDTO> answers;
+
+    @NotNull(message = "User ID is required")
+    private Long userId;
 
     @Data
     public static class AnswerDTO {

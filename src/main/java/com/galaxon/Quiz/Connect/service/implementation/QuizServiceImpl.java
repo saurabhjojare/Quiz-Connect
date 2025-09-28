@@ -1,15 +1,15 @@
 package com.galaxon.Quiz.Connect.service.implementation;
 
+import com.galaxon.Quiz.Connect.model.*;
+import com.galaxon.Quiz.Connect.repository.ScoreRepository;
 import com.galaxon.Quiz.Connect.enums.QuestionType;
 import com.galaxon.Quiz.Connect.dto.request.QuestionRequest;
 import com.galaxon.Quiz.Connect.dto.request.QuizRequest;
 import com.galaxon.Quiz.Connect.dto.request.SubmitQuizRequest;
 import com.galaxon.Quiz.Connect.dto.response.QuizTakeResponse;
 import com.galaxon.Quiz.Connect.dto.response.SubmitQuizResponse;
-import com.galaxon.Quiz.Connect.model.Option;
-import com.galaxon.Quiz.Connect.model.Question;
-import com.galaxon.Quiz.Connect.model.Quiz;
 import com.galaxon.Quiz.Connect.repository.QuizRepository;
+import com.galaxon.Quiz.Connect.repository.UserRepository;
 import com.galaxon.Quiz.Connect.service.interfaces.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,8 @@ import java.util.List;
 @Service
 public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizRepository;
+    private final ScoreRepository scoreRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Quiz createQuiz(QuizRequest quizRequest) {
@@ -50,7 +52,6 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public Quiz addQuestionToQuiz(Long quizId, List<QuestionRequest> questionRequests) {
         try {
-            // Fetch the quiz
             Quiz quiz = quizRepository.findById(quizId).orElse(null);
             if (quiz == null) {
                 log.warn("Quiz not found with id {}", quizId);
@@ -80,24 +81,20 @@ public class QuizServiceImpl implements QuizService {
                     if (question.getType() == QuestionType.SINGLE_CHOICE) {
                         long correctCount = 0;
                         for (QuestionRequest.OptionRequest o : optRequests) {
-                            if (o.isCorrect()) {
-                                correctCount++;
-                            }
-                            if (correctCount != 1) {
-                                throw new IllegalArgumentException("Single choice requires exactly 1 correct option");
-                            }
+                            if (o.isCorrect()) correctCount++;
+                        }
+                        if (correctCount != 1) {
+                            throw new IllegalArgumentException("Single choice requires exactly 1 correct option");
                         }
                     }
 
                     if (question.getType() == QuestionType.MULTIPLE_CHOICE) {
                         boolean hasCorrect = false;
                         for (QuestionRequest.OptionRequest o : optRequests) {
-                            if (o.isCorrect()) {
-                                hasCorrect = true;
-                            }
-                            if (!hasCorrect) {
-                                throw new IllegalArgumentException("Multiple choice needs at least 1 correct option");
-                            }
+                            if (o.isCorrect()) hasCorrect = true;
+                        }
+                        if (!hasCorrect) {
+                            throw new IllegalArgumentException("Multiple choice needs at least 1 correct option");
                         }
                     }
 
@@ -168,6 +165,13 @@ public class QuizServiceImpl implements QuizService {
                 return new SubmitQuizResponse();
             }
 
+            Users users = userRepository.findById(request.getUserId()).orElse(null);
+
+            if (users == null) {
+                log.info("User not found with id {}", request.getUserId());
+                return new SubmitQuizResponse();
+            }
+
             int total = quiz.getQuestions().size();
             int score = 0;
 
@@ -182,10 +186,35 @@ public class QuizServiceImpl implements QuizService {
                     }
                 }
             }
+
+            Score userScore = new Score();
+            userScore.setQuiz(quiz);
+            // TODO: Fetch user from session/auth/request
+            userScore.setUsers(users);
+            userScore.setScore(score);
+            userScore.setTotal(total);
+            scoreRepository.save(userScore);
             return new SubmitQuizResponse(score, total);
         } catch (Exception e) {
             log.error("Error submitting quiz with id {}: {}", quizId, e.getMessage(), e);
             return new SubmitQuizResponse();
+        }
+    }
+
+
+    @Override
+    public boolean deleteQuizById(Long quizId) {
+        try {
+            if (!quizRepository.existsById(quizId)) {
+                log.warn("Quiz not found with id {}", quizId);
+                return false;
+            }
+
+            quizRepository.deleteById(quizId);
+            return true;
+        } catch (Exception e) {
+            log.error("Error deleting quiz {}: {}", quizId, e.getMessage(), e);
+            return false;
         }
     }
 

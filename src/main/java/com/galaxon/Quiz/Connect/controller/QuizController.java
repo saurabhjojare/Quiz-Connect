@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -46,5 +45,10 @@ public class QuizController {
     @PostMapping(Routes.Quiz.SUBMIT_QUIZ)
     public SubmitQuizResponse submitQuiz(@PathVariable Long quizId, @Valid @RequestBody SubmitQuizRequest request) {
         return quizService.submitQuiz(quizId, request);
+    }
+
+    @DeleteMapping(Routes.Quiz.QUIZ_ID)
+    public boolean deleteQuiz(@PathVariable Long quizId) {
+        return quizService.deleteQuizById(quizId);
     }
 }
