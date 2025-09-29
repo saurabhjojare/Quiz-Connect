@@ -5,6 +5,7 @@ import com.galaxon.Quiz.Connect.dto.response.UserResponse;
 import com.galaxon.Quiz.Connect.model.Users;
 import com.galaxon.Quiz.Connect.repository.UserRepository;
 import com.galaxon.Quiz.Connect.service.interfaces.UserService;
+import com.galaxon.Quiz.Connect.wrapper.UserWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,31 +18,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponse createUser(UserRequest request) {
+    public UserResponse createUser(UserRequest userRequest) {
         try {
-            Users users = new Users();
-            users.setFirstName(request.getFirstName());
-            users.setLastName(request.getLastName());
-            users.setEmail(request.getEmail());
-            users.setPhone(request.getPhone());
-            users.setPassword(request.getPassword());
-
+            Users users = UserWrapper.toEntity(userRequest);
             Users savedUser = userRepository.save(users);
 
-            // Map entity to response
-            UserResponse response = new UserResponse();
-            response.setId(savedUser.getId());
-            response.setFirstName(savedUser.getFirstName());
-            response.setLastName(savedUser.getLastName());
-            response.setEmail(savedUser.getEmail());
-            response.setPhone(savedUser.getPhone());
+            log.info("Created user with email: {}", savedUser.getEmail());
 
-            return response;
-
+            return UserWrapper.toResponse(savedUser);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage(), e);
             return null;
         }
+    }
+
+    // TODO Implement logic to delete a user by their ID in the database.
+    @Override
+    public boolean deleteUserById(Long userId) {
+        return false;
+    }
+
+    // TODO Implement logic to update a user's details based on the request.
+    @Override
+    public UserResponse updateUserById(UserRequest request) {
+        return null;
     }
 
 }

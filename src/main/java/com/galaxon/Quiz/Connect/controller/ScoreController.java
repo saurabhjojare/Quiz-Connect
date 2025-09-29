@@ -1,14 +1,13 @@
 package com.galaxon.Quiz.Connect.controller;
 
-import com.galaxon.Quiz.Connect.constants.Routes;
-import com.galaxon.Quiz.Connect.model.Score;
+import com.galaxon.Quiz.Connect.constant.Routes;
+import com.galaxon.Quiz.Connect.dto.response.ScoreResponse;
 import com.galaxon.Quiz.Connect.service.implementation.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -18,8 +17,13 @@ public class ScoreController {
 
     private final ScoreServiceImpl scoreService;
 
+    @GetMapping
+    public List<ScoreResponse> getAllScores() {
+        return scoreService.getAllScores();
+    }
+
     @GetMapping(Routes.Score.USER_ID)
-    public List<Score> getScoresByUserId(@PathVariable Long userId) {
+    public List<ScoreResponse> getScoresByUserId(@PathVariable Long userId) {
         return scoreService.getScoresByUserId(userId);
     }
 }

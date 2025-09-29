@@ -17,10 +17,10 @@ public class QuestionRequest {
     @Size(max = 300, message = "Question text cannot exceed 300 characters")
     private String text;
 
-    private List<OptionRequest> options;
-
     @NotNull(message = "Question type is required")
     private QuestionType type;
+
+    private List<OptionRequest> options;
 
     @Data
     public static class OptionRequest {

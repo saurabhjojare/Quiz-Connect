@@ -1,6 +1,6 @@
 package com.galaxon.Quiz.Connect.controller;
 
-import com.galaxon.Quiz.Connect.constants.Routes;
+import com.galaxon.Quiz.Connect.constant.Routes;
 import com.galaxon.Quiz.Connect.dto.request.UserRequest;
 import com.galaxon.Quiz.Connect.dto.response.UserResponse;
 import com.galaxon.Quiz.Connect.service.implementation.UserServiceImpl;
@@ -20,7 +20,7 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping
-    public UserResponse createUser(@Valid @RequestBody UserRequest request) {
-        return userService.createUser(request);
+    public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
+        return userService.createUser(userRequest);
     }
 }

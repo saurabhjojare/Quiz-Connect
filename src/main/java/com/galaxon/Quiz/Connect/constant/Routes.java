@@ -1,4 +1,4 @@
-package com.galaxon.Quiz.Connect.constants;
+package com.galaxon.Quiz.Connect.constant;
 
 public class Routes {
     private Routes() {
@@ -9,13 +9,13 @@ public class Routes {
     public static final class Quiz {
         public static final String BASE_QUIZ = "/quiz";
         public static final String QUIZ_ID = "/{quizId}";
-        public static final String ADD_QUESTION = QUIZ_ID + "/question";
         public static final String TAKE_QUIZ = QUIZ_ID + "/take";
         public static final String SUBMIT_QUIZ = QUIZ_ID + "/submit";
     }
 
     public static final class Question {
         public static final String BASE_QUESTION = "/question";
+        public static final String ADD_QUESTION = Quiz.QUIZ_ID + "/question";
         public static final String QUESTION_ID = "/{questionId}";
     }
 

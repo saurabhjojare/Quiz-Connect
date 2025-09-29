@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.galaxon.Quiz.Connect.enums.QuestionType;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Entity
@@ -34,5 +33,4 @@ public class Question {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private QuestionType type;
-
 }
