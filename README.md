@@ -28,7 +28,7 @@ docker-compose up --build
 1. Open Postman.
 2. Click **Import** → **Upload Files**.
 3. Navigate to the `resources/collection` folder in the project.
-4. Select `Quize Connect API Collection.json` and click **Import**.
+4. Select `quize_connect-api-collection` and click **Import**.
 5. You can now use all the predefined API requests to test the application.
 
 ---
