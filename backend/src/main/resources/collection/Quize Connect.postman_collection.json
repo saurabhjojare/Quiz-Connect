@@ -8,14 +8,11 @@
 	"item": [
 		{
 			"name": "Create Quize",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
 					"type": "noauth"
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -125,48 +122,6 @@
 			"response": []
 		},
 		{
-			"name": "Delete Quiz",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/quizzes/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"quizzes",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Question",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/question/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"question",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create User",
 			"request": {
 				"method": "POST",
@@ -258,6 +213,27 @@
 			"response": []
 		},
 		{
+			"name": "Delete Quiz",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/quizzes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"quizzes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Scores",
 			"request": {
 				"method": "GET",
@@ -272,6 +248,27 @@
 					"path": [
 						"api",
 						"score"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Question",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/question/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"question",
+						"1"
 					]
 				}
 			},
