@@ -3,10 +3,13 @@ FROM eclipse-temurin:21-jdk-jammy AS build
 
 WORKDIR /app
 
-# Copy Maven files and download dependencies first (for caching)
+# Install dos2unix to fix line endings if necessary
+RUN apt-get update && apt-get install -y dos2unix
+
+# Copy Maven files and normalize line endings
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
-RUN chmod +x mvnw
+RUN dos2unix mvnw && chmod +x mvnw
 RUN ./mvnw dependency:go-offline -B
 
 # Copy the source code
